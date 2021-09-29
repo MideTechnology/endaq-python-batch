@@ -1,9 +1,9 @@
-from bsvp import quat
-
 import pytest
 import numpy as np
 import sympy as sp
 import quaternion
+
+from endaq.batch import quat
 
 
 @pytest.fixture()

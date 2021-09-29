@@ -5,8 +5,8 @@ import idelib
 import numpy as np
 import pytest
 
-import bsvp.analyzer
-from common_utils.nre_utils.calc.stats import rms, L2_norm
+import endaq.batch.analyzer
+from endaq.batch.utils.calc.stats import rms, L2_norm
 
 
 np.random.seed(0)
@@ -14,20 +14,20 @@ np.random.seed(0)
 
 @pytest.fixture()
 def ide_SSX70065():
-    with idelib.importFile(os.path.join("tests", "SSX70065.IDE")) as doc:
+    with idelib.importFile(os.path.join("tests", "batch", "SSX70065.IDE")) as doc:
         yield doc
 
 
 @pytest.fixture()
 def analyzer_raw():
     analyzer_mock = mock.create_autospec(
-        bsvp.analyzer.Analyzer, spec_set=False, instance=True
+        endaq.batch.analyzer.Analyzer, spec_set=False, instance=True
     )
 
-    analyzer_mock.MPS2_TO_G = bsvp.analyzer.Analyzer.MPS2_TO_G
-    analyzer_mock.MPS_TO_MMPS = bsvp.analyzer.Analyzer.MPS_TO_MMPS
-    analyzer_mock.M_TO_MM = bsvp.analyzer.Analyzer.M_TO_MM
-    analyzer_mock.PV_NATURAL_FREQS = bsvp.analyzer.Analyzer.PV_NATURAL_FREQS
+    analyzer_mock.MPS2_TO_G = endaq.batch.analyzer.Analyzer.MPS2_TO_G
+    analyzer_mock.MPS_TO_MMPS = endaq.batch.analyzer.Analyzer.MPS_TO_MMPS
+    analyzer_mock.M_TO_MM = endaq.batch.analyzer.Analyzer.M_TO_MM
+    analyzer_mock.PV_NATURAL_FREQS = endaq.batch.analyzer.Analyzer.PV_NATURAL_FREQS
 
     return analyzer_mock
 
@@ -68,34 +68,34 @@ def analyzer_bulk(analyzer_raw):
 
 class TestAnalyzer:
     def test_accRMSFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.accRMSFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.accRMSFull.func(analyzer_bulk)[
             "Resultant"
         ] == pytest.approx(
-            bsvp.analyzer.Analyzer.MPS2_TO_G
+            endaq.batch.analyzer.Analyzer.MPS2_TO_G
             * rms(L2_norm(analyzer_bulk._accelerationData, axis=0))
         )
 
     def test_velRMSFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.velRMSFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.velRMSFull.func(analyzer_bulk)[
             "Resultant"
         ] == pytest.approx(
-            bsvp.analyzer.Analyzer.MPS_TO_MMPS
+            endaq.batch.analyzer.Analyzer.MPS_TO_MMPS
             * rms(L2_norm(analyzer_bulk._velocityData, axis=0))
         )
 
     def test_disRMSFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.disRMSFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.disRMSFull.func(analyzer_bulk)[
             "Resultant"
         ] == pytest.approx(
-            bsvp.analyzer.Analyzer.M_TO_MM
+            endaq.batch.analyzer.Analyzer.M_TO_MM
             * rms(L2_norm(analyzer_bulk._displacementData, axis=0))
         )
 
     def test_accPeakFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.accPeakFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.accPeakFull.func(analyzer_bulk)[
             "Resultant"
         ] == pytest.approx(
-            bsvp.analyzer.Analyzer.MPS2_TO_G
+            endaq.batch.analyzer.Analyzer.MPS2_TO_G
             * L2_norm(analyzer_bulk._accelerationData, axis=0).max()
         )
 
@@ -112,17 +112,17 @@ class TestAnalyzer:
         pass
 
     def test_micRMSFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.micRMSFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.micRMSFull.func(analyzer_bulk)[
             "Mic"
         ] == pytest.approx(rms(analyzer_bulk._microphoneData))
 
     def test_pressFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.pressFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.pressFull.func(analyzer_bulk)[
             "Control"
         ] == pytest.approx(analyzer_bulk._pressureData.mean())
 
     def test_tempFull(self, analyzer_bulk):
-        assert bsvp.analyzer.Analyzer.tempFull.func(analyzer_bulk)[
+        assert endaq.batch.analyzer.Analyzer.tempFull.func(analyzer_bulk)[
             "Control"
         ] == pytest.approx(analyzer_bulk._temperatureData.mean())
 
@@ -130,7 +130,7 @@ class TestAnalyzer:
     # Live File Tests
 
     def testLiveFile(self, ide_SSX70065):
-        analyzer = bsvp.analyzer.Analyzer(
+        analyzer = endaq.batch.analyzer.Analyzer(
             ide_SSX70065,
             accel_start_time=None,
             accel_end_time=None,
@@ -169,13 +169,13 @@ class TestAnalyzer:
     @pytest.mark.parametrize(
         "filename",
         [
-            os.path.join(".", "tests", "test1.IDE"),
-            os.path.join(".", "tests", "test2.IDE"),
+            os.path.join("tests", "batch", "test1.IDE"),
+            os.path.join("tests", "batch", "test2.IDE"),
         ],
     )
     def testLiveFiles12(self, filename):
         ds = idelib.importFile(filename)
-        analyzer = bsvp.analyzer.Analyzer(
+        analyzer = endaq.batch.analyzer.Analyzer(
             ds,
             accel_start_time=None,
             accel_end_time=None,
@@ -219,12 +219,12 @@ class TestAnalyzer:
     @pytest.mark.parametrize(
         "filename",
         [
-            os.path.join(".", "tests", "test3.IDE"),
+            os.path.join("tests", "batch", "test3.IDE"),
         ],
     )
     def testLiveFile3(self, filename):
         ds = idelib.importFile(filename)
-        analyzer = bsvp.analyzer.Analyzer(
+        analyzer = endaq.batch.analyzer.Analyzer(
             ds,
             accel_start_time=None,
             accel_end_time=None,
@@ -248,13 +248,13 @@ class TestAnalyzer:
     @pytest.mark.parametrize(
         "filename, sample_index",
         [
-            (os.path.join(".", "tests", "test_GPS_2.IDE"), -2),
-            (os.path.join(".", "tests", "test_GPS_3.IDE"), -4),
+            (os.path.join("tests", "batch", "test_GPS_2.IDE"), -2),
+            (os.path.join("tests", "batch", "test_GPS_3.IDE"), -4),
         ],
     )
     def testLiveFileGPS(self, filename, sample_index):
         ds = idelib.importFile(filename)
-        analyzer = bsvp.analyzer.Analyzer(
+        analyzer = endaq.batch.analyzer.Analyzer(
             ds,
             accel_start_time=None,
             accel_end_time=None,

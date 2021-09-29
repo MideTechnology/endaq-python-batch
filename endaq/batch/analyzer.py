@@ -13,9 +13,9 @@ import numpy as np
 import scipy.signal
 import pandas as pd
 
-from bsvp import quat
-from common_utils.nre_utils import ide_utils
-from common_utils.nre_utils.calc import psd, stats, shock, integrate, filters
+from endaq.batch import quat
+from endaq.batch.utils import ide_utils
+from endaq.batch.utils.calc import psd, stats, shock, integrate, filters
 
 
 def as_series(

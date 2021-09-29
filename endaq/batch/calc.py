@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 import idelib
 
-from bsvp.analyzer import Analyzer
-from common_utils.nre_utils.calc import stats as utils_stats
-from common_utils.nre_utils.calc import psd as utils_psd
+from endaq.batch.analyzer import Analyzer
+from endaq.batch.utils.calc import stats as utils_stats
+from endaq.batch.utils.calc import psd as utils_psd
 
 
 def _make_meta(dataset):
