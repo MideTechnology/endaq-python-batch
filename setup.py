@@ -13,7 +13,7 @@ EXAMPLE_REQUIRES = [
     ]
 
 setuptools.setup(
-        name='endaq-io',
+        name='endaq-batch',
         version='1.0.0a1',
         author='Mide Technology',
         author_email='help@mide.com',
