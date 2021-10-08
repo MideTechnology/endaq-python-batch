@@ -17,7 +17,6 @@ TEST_REQUIRES = [
     "hypothesis",
     "sympy",
     "numpy-quaternion==2020.11.2.17.0.49",
-    "black>=21.4b1",
     "plotly",
     ]
 
