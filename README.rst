@@ -1,7 +1,7 @@
 ###
-endaq-io
+endaq-batch
 ###
 
-The `io` subpackage for `endaq-python`
+The `batch` subpackage for `endaq-python`
 
 TODO: This.
