@@ -13,7 +13,7 @@ EXAMPLE_REQUIRES = [
     ]
 
 setuptools.setup(
-        name='endaq-io',
+        name='endaq-batch',
         version='1.0.0a1',
         author='Mide Technology',
         author_email='help@mide.com',
@@ -33,8 +33,8 @@ setuptools.setup(
                      'Topic :: Scientific/Engineering',
                      ],
         keywords='ebml binary ide mide endaq',
-        packages=['endaq.io'],
-        package_dir={'endaq.io': './endaq/io'},
+        packages=['endaq.batch'],
+        package_dir={'endaq.batch': './endaq/batch'},
         install_requires=INSTALL_REQUIRES,
         extras_require={
             'test': INSTALL_REQUIRES + TEST_REQUIRES,
