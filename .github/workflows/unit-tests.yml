@@ -29,6 +29,7 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - run: python -m pip install -r requirements_dev.txt
       - run: python -m pip install .[test]
 
       - run: python -m pytest tests --cov=endaq.batch
