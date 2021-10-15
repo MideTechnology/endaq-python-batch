@@ -4,11 +4,12 @@ import os
 
 import numpy as np
 import pandas as pd
-import idelib
 
-from endaq.batch.analyzer import Analyzer
+import endaq.ide
 from endaq.calc import stats as calc_stats
 from endaq.calc import psd as calc_psd
+
+from endaq.batch.analyzer import Analyzer
 
 
 def _make_meta(dataset):
@@ -371,7 +372,7 @@ class GetDataBuilder:
         print(f"processing {filename}...")
 
         data = {}
-        with idelib.importFile(filename) as ds:
+        with endaq.ide.get_doc(filename) as ds:
             analyzer = Analyzer(
                 ds,
                 **self._analyzer_kwargs,
