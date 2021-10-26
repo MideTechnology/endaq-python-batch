@@ -27,16 +27,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Get pip Cache Location
-        id: pip-cache
-        run: echo "::set-output name=dir::$(pip cache dir)"
-
-      - name: Load pip Cache
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
