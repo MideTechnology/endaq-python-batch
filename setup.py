@@ -14,6 +14,7 @@ INSTALL_REQUIRES = [
 TEST_REQUIRES = [
     "pytest",
     "pytest-cov",
+    "pytest-xdist[psutil]",
     "hypothesis",
     "sympy",
     "numpy-quaternion==2020.11.2.17.0.49",
