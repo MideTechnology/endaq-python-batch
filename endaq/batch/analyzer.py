@@ -239,18 +239,8 @@ class Analyzer:
             pvss.index.name = "frequency (Hz)"
             return pvss
 
-        log2_f0 = np.log2(self._pvss_init_freq)
-        log2_f1 = np.log2(self._accelerationFs)
-        num_bins = np.floor(
-            self._pvss_bins_per_octave * (log2_f1 - 1 - log2_f0)
-        ).astype(int)
-
-        freqs = np.logspace(
-            start=log2_f0,
-            stop=log2_f0 + num_bins / self._pvss_bins_per_octave,
-            num=num_bins + 1,
-            base=2,
-            endpoint=True,
+        freqs = endaq.calc.logfreqs(
+            aData, self._pvss_init_freq, self._pvss_bins_per_octave
         )
         freqs = freqs[
             (freqs >= self._accelerationFs / self._accelerationData.shape[-1])
@@ -272,18 +262,8 @@ class Analyzer:
             pvss.index.name = "frequency (Hz)"
             return pvss
 
-        log2_f0 = np.log2(self._pvss_init_freq)
-        log2_f1 = np.log2(self._accelerationFs)
-        num_bins = np.floor(
-            self._pvss_bins_per_octave * (log2_f1 - 1 - log2_f0)
-        ).astype(int)
-
-        freqs = np.logspace(
-            start=log2_f0,
-            stop=log2_f0 + num_bins / self._pvss_bins_per_octave,
-            num=num_bins + 1,
-            base=2,
-            endpoint=True,
+        freqs = endaq.calc.logfreqs(
+            aData, self._pvss_init_freq, self._pvss_bins_per_octave
         )
         freqs = freqs[
             (freqs >= self._accelerationFs / self._accelerationData.shape[-1])
