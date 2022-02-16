@@ -7,6 +7,8 @@ INSTALL_REQUIRES = [
     "numpy",
     "scipy",
     "pandas",
+    "endaq-ide",
+    "endaq-calc",
     "idelib>=3.1.0",
     "backports.cached-property; python_version<'3.8'",
     ]
